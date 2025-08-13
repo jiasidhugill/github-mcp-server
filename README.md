@@ -7,7 +7,7 @@ This web service is not currently deployed. First, clone this repo to your local
 ```
 python3 -m venv .venv
 source .venv/bin/activate
-uv sync
+pip install -r requirements.txt
 ```
 
 This creates a virtual environment and installs necessary packages through the package manager [uv](https://docs.astral.sh/uv/).
