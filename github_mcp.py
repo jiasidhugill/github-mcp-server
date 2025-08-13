@@ -54,18 +54,6 @@ def create_pull_request(owner, repo_name, branch_name, title, body=""):
     return response
 
 @mcp.tool()
-def set_up_git_credentials_dotenv(finegrained_token): 
-    """
-    Uses a user's finegrained GitHub API access token to
-    update environment variables to authenticate API calls.
-    
-    The finegrained token must have Content access and
-    Pull Request (read-write) access. If an authentication
-    failure occurs, prompt user to check this token.
-    """
-    os.putenv("GITHUB_TOKEN_FINEGRAINED", finegrained_token)
-
-@mcp.tool()
 def get_list_of_files_in_repo_branch(owner, repo_name, branch_name="main"): 
     """
     Fetch a list of all the files in a given repo and branch. Can
@@ -79,6 +67,11 @@ def get_list_of_files_in_repo_branch(owner, repo_name, branch_name="main"):
         'X-GitHub-Api-Version': '2022-11-28'
     }
     response = requests.get(url, headers=headers).json()
+    if "entries" not in response: 
+        return """
+        Check that GitHub finegrained access token is set as environmental variable `GITHUB_TOKEN_FINEGRAINED`.
+        For security reasons, the user must do this manually.
+        """
     list_of_files = []
     for file in response["entries"]: 
         list_of_files.append(file["path"])
@@ -97,6 +90,11 @@ def get_remote_code_from_single_file(repo_owner, repo_name, path, branch_name="m
         'X-GitHub-Api-Version': '2022-11-28'
     }
     response = requests.get(url, headers=headers).json()
+    if "content" not in response: 
+        return """
+        Check that GitHub finegrained access token is set as environmental variable `GITHUB_TOKEN_FINEGRAINED`.
+        For security reasons, the user must do this manually.
+        """
     content = base64.b64decode((response["content"]).encode("ascii")).decode("ascii")
 
     return content

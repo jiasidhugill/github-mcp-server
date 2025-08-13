@@ -11,3 +11,7 @@ An MCP server that automates the pull requests through GitHub.
   - generate github token
 - upload to Claude
 - video demo
+
+## Example prompt
+
+Create a pull request for the branch `update-readme` in the repo `test_repo`, owned by `jiasidhugill`. Use the differences between the files in the branch and main to write a pull request summary and title.
