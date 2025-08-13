@@ -2,7 +2,7 @@
 An MCP server that automates the pull requests through GitHub.
 
 ## How to use (with Claude Desktop)
-This web service is not currently deployed. To use, run the following commands: 
+To use, run the following commands: 
 
 ```
 git clone https://github.com/jiasidhugill/github-mcp-server.git
