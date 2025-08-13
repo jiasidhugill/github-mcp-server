@@ -5,7 +5,7 @@ An MCP server that automates the pull requests through GitHub.
 This web service is not currently deployed. To use, run the following commands: 
 
 ```
-git clone 
+git clone https://github.com/jiasidhugill/github-mcp-server.git
 cd github-mcp-server
 python3 -m venv .venv
 source .venv/bin/activate
