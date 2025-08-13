@@ -2,9 +2,11 @@
 An MCP server that automates the pull requests through GitHub.
 
 ## How to use (with Claude Desktop)
-This web service is not currently deployed. First, clone this repo to your local computer. Run the following commands: 
+This web service is not currently deployed. To use, run the following commands: 
 
 ```
+git clone 
+cd github-mcp-server
 python3 -m venv .venv
 source .venv/bin/activate
 uv sync
