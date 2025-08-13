@@ -67,11 +67,12 @@ def get_list_of_files_in_repo_branch(owner, repo_name, branch_name="main"):
         'X-GitHub-Api-Version': '2022-11-28'
     }
     response = requests.get(url, headers=headers).json()
-    if "entries" not in response: 
-        return """
-        Check that GitHub finegrained access token is set as environmental variable `GITHUB_TOKEN_FINEGRAINED`.
-        For security reasons, the user must do this manually.
-        """
+    if "message" in response: 
+        if response["message"] == "Bad credentials": 
+            return """
+            Check that GitHub finegrained access token is set as environmental variable `GITHUB_TOKEN_FINEGRAINED`.
+            For security reasons, the user must do this manually.
+            """
     list_of_files = []
     for file in response["entries"]: 
         list_of_files.append(file["path"])
@@ -90,11 +91,12 @@ def get_remote_code_from_single_file(repo_owner, repo_name, path, branch_name="m
         'X-GitHub-Api-Version': '2022-11-28'
     }
     response = requests.get(url, headers=headers).json()
-    if "content" not in response: 
-        return """
-        Check that GitHub finegrained access token is set as environmental variable `GITHUB_TOKEN_FINEGRAINED`.
-        For security reasons, the user must do this manually.
-        """
+    if "message" in response: 
+        if response["message"] == "Bad credentials": 
+            return """
+            Check that GitHub finegrained access token is set as environmental variable `GITHUB_TOKEN_FINEGRAINED`.
+            For security reasons, the user must do this manually.
+            """
     content = base64.b64decode((response["content"]).encode("ascii")).decode("ascii")
 
     return content
