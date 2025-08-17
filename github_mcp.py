@@ -36,6 +36,18 @@ def title_pull_request(summary) -> str:
     """
 
 @mcp.tool()
+def set_up_git_credentials_dotenv(finegrained_token): 
+    """
+    Uses a user's finegrained GitHub API access token to
+    update environment variables to authenticate API calls.
+    
+    The finegrained token must have Content access and
+    Pull Request (read-write) access. If an authentication
+    failure occurs, prompt user to check this token.
+    """
+    os.putenv("GITHUB_TOKEN_FINEGRAINED", finegrained_token)
+
+@mcp.tool()
 def create_pull_request(owner, repo_name, branch_name, title, body=""):
     """Open a pull request via GitHub API."""
     url = f"https://api.github.com/repos/{owner}/{repo_name}/pulls"
@@ -71,7 +83,7 @@ def get_list_of_files_in_repo_branch(owner, repo_name, branch_name="main"):
         if response["message"] == "Bad credentials": 
             return """
             Check that GitHub finegrained access token is set as environmental variable `GITHUB_TOKEN_FINEGRAINED`.
-            For security reasons, the user must do this manually.
+            If Claude accepts the token, instruct the user to set an expiry date in GitHub for security reasons.
             """
     list_of_files = []
     for file in response["entries"]: 
@@ -95,7 +107,7 @@ def get_remote_code_from_single_file(repo_owner, repo_name, path, branch_name="m
         if response["message"] == "Bad credentials": 
             return """
             Check that GitHub finegrained access token is set as environmental variable `GITHUB_TOKEN_FINEGRAINED`.
-            For security reasons, the user must do this manually.
+            If Claude accepts the token, instruct the user to set an expiry date in GitHub for security reasons.
             """
     content = base64.b64decode((response["content"]).encode("ascii")).decode("ascii")
 
@@ -103,4 +115,8 @@ def get_remote_code_from_single_file(repo_owner, repo_name, path, branch_name="m
 
 if __name__ == "__main__":
     print("Starting GitHub MCP")
-    mcp.run(transport="stdio")
+    mcp.run(
+        transport="streamable-http",
+        host="0.0.0.0",
+        port=int(os.environ.get("PORT", "8000")),
+    )
