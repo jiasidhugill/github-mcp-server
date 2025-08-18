@@ -1,6 +1,6 @@
 import base64
 from dotenv import load_dotenv
-from mcp.server.fastmcp import FastMCP # type: ignore
+from fastmcp import FastMCP # type: ignoreimport os
 import os
 import requests
 load_dotenv()
@@ -117,4 +117,7 @@ if __name__ == "__main__":
     print("Starting GitHub MCP")
     mcp.run(
         transport="streamable-http",
+        host="0.0.0.0",
+        port=int(os.environ.get("PORT", "8000")),
     )
+    print("Finished GitHub MCP")
